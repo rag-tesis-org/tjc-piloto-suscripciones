@@ -1,0 +1,12 @@
+{
+  "name": "pilot/subscriptions",
+  "description": "Deterministic PHP subscription pilot",
+  "license": "proprietary",
+  "type": "project",
+  "require": {"php": "^8.3"},
+  "require-dev": {"phpunit/phpunit": "^11.5"},
+  "autoload": {"psr-4": {"Pilot\\Subscriptions\\": "src/"}},
+  "autoload-dev": {"psr-4": {"Tests\\": "tests/"}},
+  "minimum-stability": "stable",
+  "prefer-stable": true
+}
