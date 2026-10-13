@@ -13,7 +13,7 @@ final readonly class RenewalService
     public function __construct(private PaymentGateway $payments, private SubscriptionRepository $subscriptions, private RenewalDatePolicy $dates) {}
     public function renew(Subscription $subscription): void
     {
-        if ($subscription->status() === SubscriptionStatus::CANCELLED) {
+        if (SubscriptionStatus::CANCELLED === $subscription->status()) {
             return;
         }
 
