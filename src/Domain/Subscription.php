@@ -20,7 +20,7 @@ final class Subscription
     public function pendingPlan(): ?Plan { return $this->pendingPlan; }
     public function applyPendingPlan(): void
     {
-        if ($this->pendingPlan !== null) {
+        if ($this->pendingPlan instanceof Plan) {
             $this->plan = $this->pendingPlan;
             $this->pendingPlan = null;
         }
