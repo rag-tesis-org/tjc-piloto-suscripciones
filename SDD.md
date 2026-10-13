@@ -1,14 +1,22 @@
 # SDD — Suscripciones
 
-## Propósito y stack
-Piloto PHP puro de suscripciones, con PHP 8.3, Composer 2, PSR-4 y PHPUnit 11.5. No necesita red, base de datos ni reloj global al ejecutar pruebas.
+## Propósito
+Modelar planes de suscripción, sus estados y su renovación mensual.
 
-## Estructura y decisiones
-`src/Domain` contiene entidades y estado; `src/Contracts` define colaboraciones; `src/Services` concentra políticas y coordinadores. Las fechas se reciben explícitamente y el cálculo de renovación se separa de la orquestación.
+## Stack
+PHP 8.3, Composer 2, autoload PSR-4 y PHPUnit 11.5.
 
-## Casos
-- `SUB-1` (Local): `PlanPriceCalculator::monthlyAmount()` es un cálculo lineal con entradas válidas.
-- `SUB-2` (Structural): `RenewalService::renew()` coordina suscripción, plan, gateway, repositorio y política de fechas.
-- `SUB-3` (Functional): `Subscription::handleFailedPayment()` contiene una transición que requiere decisión humana; la referencia externa es `ORACLE-SUB-3`.
+## Estructura
+`src/Domain` contiene entidades y estados; `src/Contracts` define las colaboraciones de pago y persistencia; `src/Services` concentra las políticas y coordinadores.
 
-Los tres casos son parches conceptualmente independientes sobre el mismo baseline. Los tests existentes son parciales: no cubren los tres targets experimentales. Los tests PHPUnit viven bajo `tests/Unit`; cada prueba usa `PHPUnit\\Framework\\TestCase`. Fuera de alcance: HTTP, framework web, servicios externos, persistencia real y tareas asíncronas.
+## Reglas de negocio
+Una renovación cobra el precio del plan vigente, avanza la fecha de cobro un mes calendario y guarda la suscripción. Las suscripciones canceladas no se renuevan. Un cambio de plan programado se aplica al inicio de la siguiente renovación y reemplaza el plan vigente.
+
+## Decisiones de diseño
+Las fechas se reciben explícitamente y la política de calendario se mantiene separada de la coordinación del cobro. El gateway de pago reporta fallos mediante su contrato.
+
+## Ejecución
+Ejecutar `composer install` y después `php vendor/bin/phpunit`.
+
+## Fuera de alcance
+HTTP, framework web, servicios externos, persistencia real y tareas asíncronas.
