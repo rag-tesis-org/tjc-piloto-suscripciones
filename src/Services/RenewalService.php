@@ -18,7 +18,8 @@ final readonly class RenewalService
         }
 
         $subscription->applyPendingPlan();
-        $this->payments->chargeOrFail($subscription->id, $subscription->plan->monthlyPrice);
+        $amountToCharge = $subscription->plan->monthlyPrice;
+        $this->payments->chargeOrFail($subscription->id, $amountToCharge);
         $subscription->renewAt($this->dates->nextDate($subscription->nextBillingAt()));
         $this->subscriptions->save($subscription);
     }
